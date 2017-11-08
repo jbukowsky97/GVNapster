@@ -77,11 +77,6 @@ public class myGui {
 		JFrame frame = new JFrame();
 		
 		/*
-		 * replaceable padding JLabel
-		 */
-		JLabel pad = new JLabel();
-		
-		/*
 		 * main panel that will hold the layout for our main three sections
 		 * connect, search, and FTP commands
 		 */
@@ -143,7 +138,7 @@ public class myGui {
 		JTextField usernameInput = new JTextField();
 		JLabel hostnameLabel = new JLabel("Hostname:");
 		JTextField hostnameInput = new JTextField();
-		JComboBox speeds = new JComboBox(speedStrings);
+		JComboBox<String> speeds = new JComboBox<String>(speedStrings);
 		JScrollPane searchPane = new JScrollPane();
 
 		/*
@@ -225,8 +220,8 @@ public class myGui {
 		 * add the gui components to the bottom portion of the search panel
 		 */
 		searchBottom.setLayout(new BoxLayout(searchBottom, BoxLayout.LINE_AXIS));
-		searchPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-		searchPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); 
+		//searchPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		//searchPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); 
 		searchBottom.add(searchPane);
 
 		/*
