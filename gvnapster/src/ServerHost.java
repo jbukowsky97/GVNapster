@@ -3,6 +3,9 @@ import java.net.Socket;
 
 public class ServerHost {
 	
+	/**
+	* Creates a ServerHhost object for ClientHost connections.
+	*/
 	public ServerHost() {
 		// Socket to receive new connections to the server
 		ServerSocket welcomeSocket = null;

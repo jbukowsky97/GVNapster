@@ -1,5 +1,3 @@
-package myGui;
-
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -21,7 +19,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
-public class myGui {
+public class MyGui {
 	
 	/*
 	 * boolean value of whether the user is connected to a valid session
@@ -70,16 +68,11 @@ public class myGui {
 	/*
 	 * gui constructor
 	 */
-	public myGui() {
+	public MyGui() {
 		/*
 		 * main window
 		 */
 		JFrame frame = new JFrame();
-		
-		/*
-		 * replaceable padding JLabel
-		 */
-		JLabel pad = new JLabel();
 		
 		/*
 		 * main panel that will hold the layout for our main three sections
@@ -143,7 +136,7 @@ public class myGui {
 		JTextField usernameInput = new JTextField();
 		JLabel hostnameLabel = new JLabel("Hostname:");
 		JTextField hostnameInput = new JTextField();
-		JComboBox speeds = new JComboBox(speedStrings);
+		JComboBox<String> speeds = new JComboBox<String>(speedStrings);
 		JScrollPane searchPane = new JScrollPane();
 
 		/*
@@ -225,8 +218,8 @@ public class myGui {
 		 * add the gui components to the bottom portion of the search panel
 		 */
 		searchBottom.setLayout(new BoxLayout(searchBottom, BoxLayout.LINE_AXIS));
-		searchPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-		searchPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); 
+		//searchPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		//searchPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); 
 		searchBottom.add(searchPane);
 
 		/*
@@ -569,6 +562,6 @@ public class myGui {
 	 * Main Method
 	 */
 	public static void main(String args[]) {
-		new myGui();
+		new MyGui();
 	}
 }
