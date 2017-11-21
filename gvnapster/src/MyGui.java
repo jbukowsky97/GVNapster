@@ -2,6 +2,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Observable;
@@ -320,7 +322,50 @@ public class MyGui extends Observable {
 		/*
 		 * set the default close operation for the frame
 		 */
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
+		/*
+		* Overriding the close functionality of the window
+		*/
+		frame.addWindowListener(new WindowListener() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				// Notify parent of close attempt
+				setChanged();
+				notifyObservers("Close");
+				clearChanged();
+			}
+
+			@Override
+			public void windowClosed(WindowEvent e) {
+				// Do nothing
+			}
+
+			@Override
+			public void windowOpened(WindowEvent e) {
+				// Do nothing
+			}
+
+			@Override
+			public void windowDeactivated(WindowEvent e) {
+				// Do nothing
+			}
+
+			@Override
+			public void windowActivated(WindowEvent e) {
+				// Do nothing
+			}
+
+			@Override
+			public void windowDeiconified(WindowEvent e) {
+				// Do nothing
+			}
+
+			@Override
+			public void windowIconified(WindowEvent e) {
+				// Do nothing
+			}
+		});
 		
 		/*
 		 * make the frame visible

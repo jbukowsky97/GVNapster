@@ -82,6 +82,12 @@ public class GVNapster implements Observer {
 			// Disconnect from the registration server
 			model.disconnect();
 
+		} else if (action.equals("Close")) {
+			// Disconnect from the registration server
+			model.disconnect();
+
+			// Exit the program
+			System.exit(0);
 		}
 
 	}
