@@ -5,9 +5,9 @@ public class Data {
     private String username;
     private String connectionSpeed;
     private String hostname;
-    private LinkedList<String> files;
+    private LinkedList<NameDescription> files;
 
-    public Data(String username, String connectionSpeed, String hostname, LinkedList<String> files) {
+    public Data(String username, String connectionSpeed, String hostname, LinkedList<NameDescription> files) {
         this.username = username;
         this.connectionSpeed = connectionSpeed;
         this.hostname = hostname;
@@ -26,7 +26,7 @@ public class Data {
         return hostname;
     }
 
-    public LinkedList<String> getFiles() {
+    public LinkedList<NameDescription> getFiles() {
         return files;
     }
 }
