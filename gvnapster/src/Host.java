@@ -1,4 +1,4 @@
-
+import java.io.File;
 
 /**
  * This encomapsses both components necessary for peer to peer communication.
@@ -89,7 +89,7 @@ public class Host {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
+		return fileList;
 	}
 
 	/**
