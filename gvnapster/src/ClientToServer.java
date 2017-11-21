@@ -1,3 +1,7 @@
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.io.SAXReader;
+
 import java.io.*;
 import java.net.Socket;
 
@@ -42,18 +46,30 @@ public class ClientToServer extends Thread {
         try {
             //send registration info
             outToServer.writeBytes(username);
+            outToServer.flush();
             outToServer.writeBytes(connectionSpeed);
+            outToServer.flush();
             outToServer.writeBytes(hostName);
+            outToServer.flush();
 
             //send filelist
-            outToServer.wri
+            SAXReader reader = new SAXReader();
+            Document document = reader.read(fileList);
+            String fileText = document.asXML();
+            outToServer.writeBytes(fileText);
+            outToServer.flush();
 
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (DocumentException e) {
+            e.printStackTrace();
         }
 
-
     }
+
+//    public static void main(String[] args){
+//        ClientToServer cts = new ClientToServer("", , );
+//    }
 
 
 }
