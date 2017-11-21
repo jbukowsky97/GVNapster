@@ -1,3 +1,3 @@
 #! /bin/bash
 
-java -cp build/ GVNapster
+java -cp build/:lib/* GVNapster
