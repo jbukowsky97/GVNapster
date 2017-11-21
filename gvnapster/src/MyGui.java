@@ -388,7 +388,7 @@ public class MyGui extends Observable {
 				buttonChange(connect, portInput);
 			}
 		});
-		
+
 		search.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				/*
@@ -396,16 +396,16 @@ public class MyGui extends Observable {
 				 */
 				DefaultTableModel model = new DefaultTableModel(searchArray, COLUMN_NAMES);
 				resultsTable = new JTable(model);
-				
+
 				setChanged();
 				notifyObservers(search.getText());
 				clearChanged();
-				
+
 				/*
 				 * set the search scroll pane viewport
 				 */
 				searchPane.setViewportView(resultsTable);
-				
+
 				/*
 				 * clear and reset necessary gui components
 				 */
