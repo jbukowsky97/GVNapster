@@ -105,7 +105,7 @@ public class ClientToServer {
         File filelist = new File("/home/jonah/Documents/457CIS/GVNapster/filelist.xml");
         ClientToServer cts = new ClientToServer();
         cts.connect("127.0.0.1", 6531 , filelist,"sam", "DSL", "tomatoes");
-        String[][] query = cts.query("titties");
+        String[][] query = cts.query("best");
         for (int i = 0; i < query.length; i++) {
             System.out.println(query[i][0] + "\t" + query[i][1] + "\t" + query[i][2]);
         }
