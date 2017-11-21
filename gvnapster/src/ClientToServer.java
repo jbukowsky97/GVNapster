@@ -43,18 +43,16 @@ public class ClientToServer {
 
         try {
             //send registration info
-            outToServer.writeBytes(username);
-            outToServer.flush();
-            outToServer.writeBytes(connectionSpeed);
-            outToServer.flush();
-            outToServer.writeBytes(hostName);
-            outToServer.flush();
+            outToServer.writeBytes(username + "\n");
+            outToServer.writeBytes(connectionSpeed + "\n");
+            outToServer.writeBytes(hostName + "\n");
 
             //send filelist
             SAXReader reader = new SAXReader();
             Document document = reader.read(fileList);
             String fileText = document.asXML();
-            outToServer.writeBytes(fileText);
+            outToServer.writeBytes(fileText + "\n");
+            outToServer.writeBytes("end\n");
             outToServer.flush();
 
         } catch (IOException e) {
@@ -68,21 +66,23 @@ public class ClientToServer {
     public String[][] query(String searchTerm){
         LinkedList<String[]> returnList = new LinkedList<String[]>();
         try {
-            outToServer.writeBytes(searchTerm);
-
+            outToServer.writeBytes(searchTerm + "\n");
+            outToServer.flush();
 
             while(!inFromServer.ready());
 
             while(inFromServer.ready()){
-
-                String[] temp = inFromServer.readLine().split(" ");
-                returnList.add(temp);
+                String temp = inFromServer.readLine();
+                if (temp.equals("none")) {
+                    break;
+                }
+                String[] tempList = temp.split(" ");
+                returnList.add(tempList);
             }
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return returnList.toArray(new String[returnList.size()][]);
 
     }
@@ -102,9 +102,13 @@ public class ClientToServer {
     }
 
     public static void main(String[] args){
-        File filelist = new File("/home/carsonsa/CIS_457/project2/GVNapster/filelist.xml");
+        File filelist = new File("/home/jonah/Documents/457CIS/GVNapster/filelist.xml");
         ClientToServer cts = new ClientToServer();
-        cts.connect("35.39.165.157", 6531 , filelist,"sam", "DSL", "tomatoes");
+        cts.connect("127.0.0.1", 6531 , filelist,"sam", "DSL", "tomatoes");
+        String[][] query = cts.query("titties");
+        for (int i = 0; i < query.length; i++) {
+            System.out.println(query[i][0] + "\t" + query[i][1] + "\t" + query[i][2]);
+        }
     }
 
 

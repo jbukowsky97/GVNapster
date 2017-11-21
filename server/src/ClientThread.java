@@ -46,9 +46,13 @@ public class ClientThread extends Thread {
             hostname = inFromClient.readLine();
             System.out.println("hostname:\t" + hostname);
             String xml = "";
-            while (!inFromClient.ready());
-            while (inFromClient.ready()) {
-                xml += inFromClient.readLine();
+            while (true) {
+                String temp = inFromClient.readLine();
+                if (temp.equals("end")) {
+                    break;
+                }else {
+                    xml += temp;
+                }
             }
             System.out.println("xml:\t" + xml);
             Document document = DocumentHelper.parseText(xml);
@@ -61,9 +65,18 @@ public class ClientThread extends Thread {
                 System.out.println("name:\t" + name + "\n\tdescription:\t" + description);
                 files.add(new NameDescription(name, description));
             }
+
             ServerData.serverData.add(new Data(username, connectionSpeed, hostname, files));
+            for (Data d : ServerData.serverData) {
+                for (NameDescription n : d.getFiles()) {
+                    System.out.println(n.getName() + "\t" + n.getDescription());
+                }
+            }
+
             runloop: while (true) {
+                while (!inFromClient.ready());
                 String queryStr = inFromClient.readLine();
+                System.out.println("queryString:\t" + queryStr);
                 if (queryStr.equals("disconnect")) {
                     outToClient.close();
                     inFromClient.close();
@@ -80,6 +93,9 @@ public class ClientThread extends Thread {
                 }
                 for (String printStr : returnStrings) {
                     outToClient.writeBytes(printStr + "\n");
+                }
+                if (returnStrings.size() == 0) {
+                    outToClient.writeBytes("none\n");
                 }
                 outToClient.flush();
             }
