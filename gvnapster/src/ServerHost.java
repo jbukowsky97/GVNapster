@@ -1,12 +1,18 @@
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class ServerHost {
+public class ServerHost extends Thread {
 	
 	/**
 	* Creates a ServerHhost object for ClientHost connections.
 	*/
 	public ServerHost() {
+	}
+
+	/**
+	* Entry point of the Peer-side server.
+	*/
+	public void run() {
 		// Socket to receive new connections to the server
 		ServerSocket welcomeSocket = null;
 
