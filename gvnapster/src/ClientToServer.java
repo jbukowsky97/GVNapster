@@ -4,8 +4,9 @@ import org.dom4j.io.SAXReader;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.LinkedList;
 
-public class ClientToServer extends Thread {
+public class ClientToServer {
 
     private String ip, username, connectionSpeed, hostName;
     private int port;
@@ -19,9 +20,6 @@ public class ClientToServer extends Thread {
 
     }
 
-    public void run(){
-
-    }
 
     public void connect(String ip, int port, File fileList, String username,
                         String connectionSpeed, String hostName){
@@ -62,6 +60,42 @@ public class ClientToServer extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         } catch (DocumentException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public String[][] query(String searchTerm){
+        LinkedList<String[]> returnList = new LinkedList<String[]>();
+        try {
+            outToServer.writeBytes(searchTerm);
+
+
+            while(!inFromServer.ready());
+
+            while(inFromServer.ready()){
+
+                String[] temp = inFromServer.readLine().split(" ");
+                returnList.add(temp);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return returnList.toArray(new String[returnList.size()][]);
+
+    }
+
+    public void disconnect() {
+
+        try {
+            outToServer.writeBytes("disconnect");
+
+            outToServer.close();
+            inFromServer.close();
+            socket.close();
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
