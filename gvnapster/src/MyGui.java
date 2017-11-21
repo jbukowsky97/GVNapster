@@ -330,22 +330,6 @@ public class MyGui extends Observable {
 		 */
 		connect.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				/* 
-				 * **TODO: IMPLEMENT CONNECTION WITH SERVER**
-				 * 
-				 * pseudo code
-				 * 
-				 * attemptConnection(username, hostname, server, port)
-				 * 
-				 * if (connectionWithServer == true)
-				 * 		sendDataToServer(username, hostname, connectionSpeed)
-				 * 		uploadUserFileDescriptions(userFileDescriptions)
-				 * 
-				 * 		if (userRegistration && fileRegistration == true)
-				 * 			enable searches
-				 * 		else 
-				 * 			message box "couldn't connect to <hostname> on port <port number>"
-				 */
 				printToConsole(usernameInput.getText() + "@" + hostnameInput.getText() + " connecting to " + serverHostnameInput.getText() + ":" + portInput.getText() + "...");
 				
 				/*
@@ -374,8 +358,6 @@ public class MyGui extends Observable {
 		disconnect.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				/*
-				 * **TODO: SEND QUIT COMMAND TO SERVER**
-				 * 
 				 * clear and reset necessary gui components
 				 */
 				printToConsole(usernameInput.getText() + "@" + hostnameInput.getText() + " disconnecting...");
