@@ -32,7 +32,7 @@ public class Host {
 		// Create a new client
 		client = new ClientHost();
 
-		//create new clientToServer
+		// Create new clientToServer
 		cts = new ClientToServer();
 
 		// Create a new server

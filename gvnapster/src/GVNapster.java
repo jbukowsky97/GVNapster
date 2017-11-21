@@ -41,7 +41,7 @@ public class GVNapster implements Observer {
 			String[] params = command.split(" ");
 
 			if (params[0].toLowerCase().equals("retr")) {
-				if (params.length == 4) {
+				if (params.length == 3) {
 					// Parse params
 					String host = params[1];
 					String fileName = params[2];
