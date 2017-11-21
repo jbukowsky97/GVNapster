@@ -43,6 +43,7 @@ public class ClientThread extends Thread {
             username = inFromClient.readLine();
             connectionSpeed = inFromClient.readLine();
             hostname = inFromClient.readLine();
+            System.out.println(username + "@" + hostname + " has connected");
             String xml = "";
             while (true) {
                 String temp = inFromClient.readLine();
@@ -76,8 +77,10 @@ public class ClientThread extends Thread {
                             ServerData.serverData.remove(d);
                         }
                     }
+                    System.out.println(username + "@" + hostname + " has disconnected");
                     break runloop;
                 }
+                System.out.println(username + "@" + hostname + " searched for:\t" + queryStr);
                 LinkedList<String> returnStrings = new LinkedList<String>();
                 for (Data d : ServerData.serverData) {
                     for (NameDescription n : d.getFiles()) {
