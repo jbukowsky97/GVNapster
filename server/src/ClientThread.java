@@ -2,8 +2,10 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -38,24 +40,52 @@ public class ClientThread extends Thread {
             while (!inFromClient.ready());
             String username, connectionSpeed, hostname;
             username = inFromClient.readLine();
+            System.out.println("username:\t" + username);
             connectionSpeed = inFromClient.readLine();
+            System.out.println("connectionSpeed:\t" + connectionSpeed);
             hostname = inFromClient.readLine();
+            System.out.println("hostname:\t" + hostname);
             String xml = "";
             while (!inFromClient.ready());
             while (inFromClient.ready()) {
                 xml += inFromClient.readLine();
             }
+            System.out.println("xml:\t" + xml);
             Document document = DocumentHelper.parseText(xml);
             Element fileList = document.getRootElement();
+            LinkedList<NameDescription> files = new LinkedList<NameDescription>();
             for (Iterator<Element> it = fileList.elementIterator("file"); it.hasNext();) {
                 Element file = it.next();
-                String name  = file.attributeValue("name");
-                String description = file.attributeValue("description");
+                String name  = file.element("name").getStringValue();
+                String description = file.element("description").getStringValue();
                 System.out.println("name:\t" + name + "\n\tdescription:\t" + description);
+                files.add(new NameDescription(name, description));
+            }
+            ServerData.serverData.add(new Data(username, connectionSpeed, hostname, files));
+            runloop: while (true) {
+                String queryStr = inFromClient.readLine();
+                if (queryStr.equals("disconnect")) {
+                    outToClient.close();
+                    inFromClient.close();
+                    controlSocket.close();
+                    break runloop;
+                }
+                LinkedList<String> returnStrings = new LinkedList<String>();
+                for (Data d : ServerData.serverData) {
+                    for (NameDescription n : d.getFiles()) {
+                        if (n.getName().toLowerCase().contains(queryStr.toLowerCase()) || n.getDescription().toLowerCase().contains(queryStr.toLowerCase())) {
+                            returnStrings.add(d.getConnectionSpeed() + " " + d.getHostname() + " " + n.getName());
+                        }
+                    }
+                }
+                for (String printStr : returnStrings) {
+                    outToClient.writeBytes(printStr + "\n");
+                }
+                outToClient.flush();
             }
 
         }catch (IOException e) {
-
+            e.printStackTrace();
         } catch (DocumentException e) {
             e.printStackTrace();
         }
