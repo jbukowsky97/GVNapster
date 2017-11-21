@@ -67,9 +67,11 @@ public class ClientToServer extends Thread {
 
     }
 
-//    public static void main(String[] args){
-//        ClientToServer cts = new ClientToServer("", , );
-//    }
+    public static void main(String[] args){
+        File filelist = new File("/home/carsonsa/CIS_457/project2/GVNapster/filelist.xml");
+        ClientToServer cts = new ClientToServer();
+        cts.connect("35.39.165.157", 6531 , filelist,"sam", "DSL", "tomatoes");
+    }
 
 
 }
