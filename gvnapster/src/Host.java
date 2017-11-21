@@ -7,6 +7,12 @@
  */
 public class Host {
 
+	/** The path to the client's file directory  */
+        private final String ROOT_PATH = ClientHost.class.getProtectionDomain().getCodeSource().getLocation().getPath() + "../client_root/";
+
+	/** The name of the file list containing all files of the client */
+	private final String FILE_LIST = "filelist.xml";
+
 	/** The client of the peer. */
 	private ClientHost client;
 
@@ -70,6 +76,23 @@ public class Host {
 	}
 
 	/**
+	* Provides the file containing the client's list of files.
+	*
+	* @return The file containing a list of files on the client
+	*/
+	private File getFileList() {
+
+		File fileList = null;
+
+		try {
+			fileList = new File(ROOT_PATH + FILE_LIST);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	/**
 	* Register with the registration server.
 	*
 	* @param serverHostname Host address of the registration server
@@ -81,8 +104,12 @@ public class Host {
 	public void register(String serverHostname, int port, String username, String hostname, String speed) {
 		//TODO Sam register with the registration server
 		//TODO Send my file list to registration server
+		File fileList = getFileList();
 
-		cts.connect(serverHostname, port, , username, speed, hostname);
+		if (fileList != null) {
+			cts.connect(serverHostname, port, fileList, username, speed, hostname);
+		}
+
 	}
 
 	/**
