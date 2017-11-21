@@ -23,6 +23,8 @@ public class ClientThread extends Thread {
     /** Control input stream for receiving commands from the client */
     private BufferedReader inFromClient;
 
+    private String username, connectionSpeed, hostname;
+
     public ClientThread(Socket controlSocket) {
         this.controlSocket = controlSocket;
         try {
@@ -38,13 +40,9 @@ public class ClientThread extends Thread {
     public void run() {
         try {
             while (!inFromClient.ready());
-            String username, connectionSpeed, hostname;
             username = inFromClient.readLine();
-            System.out.println("username:\t" + username);
             connectionSpeed = inFromClient.readLine();
-            System.out.println("connectionSpeed:\t" + connectionSpeed);
             hostname = inFromClient.readLine();
-            System.out.println("hostname:\t" + hostname);
             String xml = "";
             while (true) {
                 String temp = inFromClient.readLine();
@@ -54,7 +52,6 @@ public class ClientThread extends Thread {
                     xml += temp;
                 }
             }
-            System.out.println("xml:\t" + xml);
             Document document = DocumentHelper.parseText(xml);
             Element fileList = document.getRootElement();
             LinkedList<NameDescription> files = new LinkedList<NameDescription>();
@@ -62,25 +59,23 @@ public class ClientThread extends Thread {
                 Element file = it.next();
                 String name  = file.element("name").getStringValue();
                 String description = file.element("description").getStringValue();
-                System.out.println("name:\t" + name + "\n\tdescription:\t" + description);
                 files.add(new NameDescription(name, description));
             }
 
             ServerData.serverData.add(new Data(username, connectionSpeed, hostname, files));
-            for (Data d : ServerData.serverData) {
-                for (NameDescription n : d.getFiles()) {
-                    System.out.println(n.getName() + "\t" + n.getDescription());
-                }
-            }
 
             runloop: while (true) {
                 while (!inFromClient.ready());
                 String queryStr = inFromClient.readLine();
-                System.out.println("queryString:\t" + queryStr);
                 if (queryStr.equals("disconnect")) {
                     outToClient.close();
                     inFromClient.close();
                     controlSocket.close();
+                    for (Data d : ServerData.serverData) {
+                        if (d.getHostname().equals(hostname) && d.getConnectionSpeed().equals(connectionSpeed) && d.getUsername().equals(username)) {
+                            ServerData.serverData.remove(d);
+                        }
+                    }
                     break runloop;
                 }
                 LinkedList<String> returnStrings = new LinkedList<String>();
