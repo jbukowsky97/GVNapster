@@ -47,7 +47,7 @@ public class GVNapster implements Observer {
 					String fileName = params[2];
 
 					// Retrieve file from peer
-					model.connect(host, 5340);
+					model.connect(host, 5338);
 					model.retr(fileName);
 					model.quit();
 				}

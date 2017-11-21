@@ -104,8 +104,7 @@ public class Host {
 	* @param speed Speed of the peer connect
 	*/
 	public void register(String serverHostname, int port, String username, String hostname, String speed) {
-		//TODO Sam register with the registration server
-		//TODO Send my file list to registration server
+
 		File fileList = getFileList();
 
 		if (fileList != null) {
