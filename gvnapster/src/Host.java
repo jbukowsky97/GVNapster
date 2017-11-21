@@ -8,7 +8,7 @@ import java.io.File;
 public class Host {
 
 	/** The path to the client's file directory  */
-        private final String ROOT_PATH = ClientHost.class.getProtectionDomain().getCodeSource().getLocation().getPath() + "../client_root/";
+        private final String ROOT_PATH = Host.class.getProtectionDomain().getCodeSource().getLocation().getPath() + "../client_root/";
 
 	/** The name of the file list containing all files of the client */
 	private final String FILE_LIST = "filelist.xml";
@@ -89,7 +89,9 @@ public class Host {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
 		return fileList;
+
 	}
 
 	/**
