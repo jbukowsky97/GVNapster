@@ -35,22 +35,54 @@ public class GVNapster implements Observer {
 		String action = (String)arg;
 
 		if (action.equals("Go")) {
+
+			// Take in command and parse
 			String command = view.getCommandInput();
-			System.out.println(command);
+			String[] params = command.split(" ");
+
+			if (params[0].toLowerCase().equals("retr")) {
+				if (params.length == 4) {
+					// Parse params
+					String host = params[1];
+					int port = Integer.parseInt(params[2]);
+					String fileName = params[3];
+
+					// Retrieve file from peer
+					model.connect(host, port);
+					model.retr(fileName);
+					model.quit();
+				}
+
+			}
+
 		} else if (action.equals("Search")) {
-			//TODO Read the search box and search the Host for keyword
-			String search = view.getKeywordInput();
-			System.out.println(search);
+
+			// Take in search query
+			String search = view.getKeywordInput().trim();
+
+			// Have model search for desired query
+			model.search(search);
+
+			// Update GUI display
+			view.setSearchArray(model.getSearchData());
+
 		} else if (action.equals("Connect")) {
-			//TODO Read the Server Hostname box and Port box and connect to the server
-			String serverHostName = view.getServerHostnameInput();
-			String port = view.getPortInput();
-			String userName = view.getUsernameInput();
-			String hostName = view.getHostnameInput();
+
+			// Read in registration server fields
+			String serverHostname = view.getServerHostnameInput();
+			int port = Integer.parseInt(view.getPortInput());
+			String username = view.getUsernameInput();
+			String hostname = view.getHostnameInput();
 			String speed = view.getSpeed();
-			System.out.println(serverHostName + " " + port + " " + hostName + " " + userName + " " + speed);
+
+			// Register with registration server
+			model.register(serverHostname, port, username, hostname, speed);
+
 		} else if (action.equals("Disconnect")) {
-			model.quit();
+
+			// Disconnect from the registration server
+			model.disconnect();
+
 		}
 
 	}
