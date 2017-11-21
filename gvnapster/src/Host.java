@@ -13,6 +13,9 @@ public class Host {
 	/** The server of the peer. */
 	private ServerHost server;
 
+	/** The client to server connection. */
+	private ClientToServer cts;
+
 	/** Search data */
 	private String[][] searchData;
 
@@ -22,6 +25,9 @@ public class Host {
 	public Host() {
 		// Create a new client
 		client = new ClientHost();
+
+		//create new clientToServer
+		cts = new ClientToServer();
 
 		// Create a new server
 		server = new ServerHost();
@@ -75,6 +81,8 @@ public class Host {
 	public void register(String serverHostname, int port, String username, String hostname, String speed) {
 		//TODO Sam register with the registration server
 		//TODO Send my file list to registration server
+
+		cts.connect(serverHostname, port, , username, speed, hostname);
 	}
 
 	/**
@@ -83,14 +91,14 @@ public class Host {
 	* @param search Search query to send to registration server
 	*/
 	public void search(String search) {
-		//TODO Sam pass search query on to registration server
+		searchData = cts.query(search);
 	}
 
 	/**
 	* Disconnect from the registration server.
 	*/
 	public void disconnect() {
-		//TODO Sam disconnect from the registration server
+		cts.disconnect();
 	}
 
 }
