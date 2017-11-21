@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <filelist>
 	<file>
-		<name>Pineapple.jpg</name>
+		<name>pineapple.jpg</name>
 		<description>A picture of a succulent pineapple.</description>
 	</file>
 	<file>
-		<name>Test.txt</name>
+		<name>test.txt</name>
 		<description>Apparently Troy is really cool.</description>
 	</file>
 </filelist>
