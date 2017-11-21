@@ -44,11 +44,10 @@ public class GVNapster implements Observer {
 				if (params.length == 4) {
 					// Parse params
 					String host = params[1];
-					int port = Integer.parseInt(params[2]);
-					String fileName = params[3];
+					String fileName = params[2];
 
 					// Retrieve file from peer
-					model.connect(host, port);
+					model.connect(host, 5340);
 					model.retr(fileName);
 					model.quit();
 				}
