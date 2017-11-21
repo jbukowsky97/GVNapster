@@ -32,6 +32,8 @@ public class MyGui extends Observable {
 	private JTextField commandInput;
 	private JComboBox<String> speeds;
 	private String[][] searchArray;
+	private JTable resultsTable;
+	private final static String[] COLUMN_NAMES = { "Speed", "Hostname", "Filename" };
 
 	/*
 	 * helper method for getting padding between labels and panels
@@ -392,9 +394,8 @@ public class MyGui extends Observable {
 				/*
 				 * load search data table
 				 */
-				String[] columnNames = { "Speed", "Hostname", "Filename" };
-				DefaultTableModel model = new DefaultTableModel(searchArray, columnNames);
-				JTable resultsTable = new JTable(model);
+				DefaultTableModel model = new DefaultTableModel(searchArray, COLUMN_NAMES);
+				resultsTable = new JTable(model);
 				
 				setChanged();
 				notifyObservers(search.getText());
@@ -592,7 +593,7 @@ public class MyGui extends Observable {
 	
 	public void setSearchArray(String[][] newArray) {
 		searchArray = newArray;
-		
+		resultsTable = new JTable(new DefaultTableModel(searchArray, COLUMN_NAMES));
 	}
 	
 	/*
