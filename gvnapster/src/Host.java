@@ -11,7 +11,7 @@ public class Host {
 	private ClientHost client;
 
 	/** The server of the peer. */
-	private ServerHost server;
+	private ServerHost server;	
 
 	/**
 	* Constructs a new Host object.
@@ -22,19 +22,32 @@ public class Host {
 
 		// Create a new server
 		server = new ServerHost();
+		server.start();
 	}
 
 	/**
-	* Asks the client to connect to the specified host and retrieve the desired
-	* file.
+	* Connects to the specified remote server.
 	*
-	* @param host Host ip of the server to connect to.
-	* @param port Port on host to connect to.
+	* @param host Host address to connect to.
+	* @param port Port number on host to connect to.
+	*/
+	public void connect(String host, int port) {
+		client.command("connect " + host + " " + port);
+	}
+
+	/**
+	* Asks the client to retrieve the desired file.
+	*
 	* @param fileName Name of the file to retrieve from the remote host.
 	*/
-	public void retr(String host, int port, String fileName) {
-		client.command("connect " + host + " " + port);
+	public void retr(String fileName) {
 		client.command("retr " + fileName);
+	}
+
+	/**
+	* Disconnects the client from the remote server.
+	*/
+	public void quit() {
 		client.command("quit");
 	}
 

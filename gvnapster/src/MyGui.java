@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Observable;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -19,13 +20,18 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
-public class MyGui {
-	
-	/*
-	 * boolean value of whether the user is connected to a valid session
-	 */
-	boolean userConnected;
-	JTextArea console;
+public class MyGui extends Observable {
+
+	private boolean userConnected;
+	private JTextArea console;
+	private JTextField serverHostnameInput;
+	private JTextField portInput;
+	private JTextField usernameInput;
+	private JTextField hostnameInput;
+	private JTextField keywordInput;
+	private JTextField commandInput;
+	private JComboBox<String> speeds;
+	private String[][] searchArray;
 
 	/*
 	 * helper method for getting padding between labels and panels
@@ -81,18 +87,9 @@ public class MyGui {
 		JPanel mainPanel = new JPanel();
 		
 		/*
-		 * **TODO: NEED TO LOAD IN ARRAY FROM SERVER UPON A SEARCH REQUEST**
-		 * 
-		 * sample array that can be read into our search JTable
-		 * 
-		 * searchArray[0] = entry 0, searchArray[1] = entry 1, searchArray[2] = entry 2 ...
-		 */
-		String[][] searchArray = {{"Fiber", "user1", "filesearch.txt"}, {"Satellite", "user2", "search.rtf"}, {"DSL", "user3", "searched.docx"}};
-		
-		/*
 		 * internet speed options
 		 */
-		String[] speedStrings = { "Dial-up", "DSL", "Cable", "Satelite", "Broadband", "Fiber", "Other"};
+		String[] speedStrings = {"Dial-up", "DSL", "Cable", "Satelite", "Broadband", "Fiber", "Other"};
 		
 		/*
 		 * the user is initially NOT connected
@@ -127,17 +124,22 @@ public class MyGui {
 		 * create components for upper and lower connection panel
 		 */
 		JLabel serverHostnameLabel = new JLabel("Server Hostname:");
-		JTextField serverHostnameInput = new JTextField();
 		JLabel portLabel = new JLabel("Port:");
-		JTextField portInput = new JTextField();
 		JButton connect = new JButton("Connect");
 		JButton disconnect = new JButton("Disconnect");
 		JLabel usernameLabel = new JLabel("Username:");
-		JTextField usernameInput = new JTextField();
 		JLabel hostnameLabel = new JLabel("Hostname:");
-		JTextField hostnameInput = new JTextField();
-		JComboBox<String> speeds = new JComboBox<String>(speedStrings);
 		JScrollPane searchPane = new JScrollPane();
+		
+		/*
+		 * create variables needed by controller
+		 */
+		portInput = new JTextField();
+		usernameInput = new JTextField();
+		serverHostnameInput = new JTextField();
+		hostnameInput = new JTextField();
+		searchArray = new String[0][0];
+		speeds = new JComboBox<String>(speedStrings);
 
 		/*
 		 * add components to top portion of connection panel
@@ -201,8 +203,12 @@ public class MyGui {
 		 * create the components for the search panel
 		 */
 		JLabel keywordLabel = new JLabel("Keyword:");
-		JTextField keywordInput = new JTextField();
 		JButton search = new JButton("Search");
+		
+		/*
+		 * create input field needed by controller
+		 */
+		keywordInput = new JTextField();
 
 		/*
 		 * add the gui components to the top portion of the search panel
@@ -254,9 +260,13 @@ public class MyGui {
 		 * create the gui components for the FTP panel
 		 */
 		JLabel commandLabel = new JLabel("Enter Command:");
-		JTextField commandInput = new JTextField();
 		JButton go = new JButton("Go");
 		console = new JTextArea();
+		
+		/*
+		 * create input field needed by controller
+		 */
+		commandInput = new JTextField();
 
 		/*
 		 * add the gui components to the top portion of the FTP panel
@@ -344,6 +354,11 @@ public class MyGui {
 				 * they are only able to disconnect through the 'connection' panel
 				 * the keywordInput field for the 'search' panel is now available
 				 */
+				
+				setChanged();
+				notifyObservers(connect.getText());
+				clearChanged();
+				
 				userConnected = true;
 				connect.setEnabled(false);
 				disconnect.setEnabled(true);
@@ -363,8 +378,11 @@ public class MyGui {
 				 * 
 				 * clear and reset necessary gui components
 				 */
-				
 				printToConsole(usernameInput.getText() + "@" + hostnameInput.getText() + " disconnecting...");
+				
+				setChanged();
+				notifyObservers(disconnect.getText());
+				clearChanged();
 				
 				userConnected = false;
 				disconnect.setEnabled(false);
@@ -390,15 +408,15 @@ public class MyGui {
 		search.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				/*
-				 * **TODO: LOAD SEARCH FROM SERVER**
-				 */
-				
-				/*
-				 * dummy search data
+				 * load search data table
 				 */
 				String[] columnNames = { "Speed", "Hostname", "Filename" };
 				DefaultTableModel model = new DefaultTableModel(searchArray, columnNames);
 				JTable resultsTable = new JTable(model);
+				
+				setChanged();
+				notifyObservers(search.getText());
+				clearChanged();
 				
 				/*
 				 * set the search scroll pane viewport
@@ -421,6 +439,10 @@ public class MyGui {
 				 * print command to console
 				 */
 				printToConsole(commandInput.getText());
+				
+				setChanged();
+				notifyObservers(go.getText());
+				clearChanged();
 				
 				/*
 				 * clear and reset necessary gui components
@@ -556,6 +578,39 @@ public class MyGui {
 				buttonChange(go, commandInput);
 			}
 		});
+	}
+	
+	public String getPortInput() {
+		return portInput.getText();
+	}
+	
+	public String getUsernameInput() {
+		return usernameInput.getText();
+	}
+	
+	public String getServerHostnameInput() {
+		return serverHostnameInput.getText();
+	}
+	
+	public String getHostnameInput() {
+		return hostnameInput.getText();
+	}
+	
+	public String getKeywordInput() {
+		return keywordInput.getText();
+	}
+	
+	public String getCommandInput() {
+		return commandInput.getText();
+	}
+	
+	public String getSpeed() {
+		return speeds.getSelectedItem().toString();
+	}
+	
+	public void setSearchArray(String[][] newArray) {
+		searchArray = newArray;
+		
 	}
 	
 	/*
