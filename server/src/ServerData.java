@@ -1,7 +1,9 @@
+import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 
 public class ServerData {
 
-    public static LinkedList<Data> serverData = new LinkedList<>();
+    public static final List<Data> serverData = Collections.synchronizedList(new LinkedList<Data>());
 
 }

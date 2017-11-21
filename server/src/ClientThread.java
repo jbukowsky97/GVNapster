@@ -72,9 +72,13 @@ public class ClientThread extends Thread {
                     outToClient.close();
                     inFromClient.close();
                     controlSocket.close();
-                    for (Data d : ServerData.serverData) {
-                        if (d.getHostname().equals(hostname) && d.getConnectionSpeed().equals(connectionSpeed) && d.getUsername().equals(username)) {
-                            ServerData.serverData.remove(d);
+                    synchronized (ServerData.serverData) {
+                        Iterator i = ServerData.serverData.iterator();
+                        while (i.hasNext()) {
+                            Data d = (Data) i.next();
+                            if (d.getHostname().equals(hostname) && d.getConnectionSpeed().equals(connectionSpeed) && d.getUsername().equals(username)) {
+                                ServerData.serverData.remove(d);
+                            }
                         }
                     }
                     System.out.println(username + "@" + hostname + " has disconnected");
@@ -82,10 +86,14 @@ public class ClientThread extends Thread {
                 }
                 System.out.println(username + "@" + hostname + " searched for:\t" + queryStr);
                 LinkedList<String> returnStrings = new LinkedList<String>();
-                for (Data d : ServerData.serverData) {
-                    for (NameDescription n : d.getFiles()) {
-                        if (n.getName().toLowerCase().contains(queryStr.toLowerCase()) || n.getDescription().toLowerCase().contains(queryStr.toLowerCase())) {
-                            returnStrings.add(d.getConnectionSpeed() + " " + d.getHostname() + " " + n.getName());
+                synchronized (ServerData.serverData) {
+                    Iterator i = ServerData.serverData.iterator();
+                    while (i.hasNext()) {
+                        Data d = (Data) i.next();
+                        for (NameDescription n : d.getFiles()) {
+                            if (n.getName().toLowerCase().contains(queryStr.toLowerCase()) || n.getDescription().toLowerCase().contains(queryStr.toLowerCase())) {
+                                returnStrings.add(d.getConnectionSpeed() + " " + d.getHostname() + " " + n.getName());
+                            }
                         }
                     }
                 }
