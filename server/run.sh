@@ -1,3 +1,3 @@
 #! /bin/bash
 
-java -cp build/ Server
+java -cp build/:lib/* Server
