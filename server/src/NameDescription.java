@@ -6,7 +6,6 @@ public class NameDescription {
     public NameDescription(String name, String description) {
         this.name = name;
         this.description = description;
-        this.description = description;
     }
 
     public String getName() {
