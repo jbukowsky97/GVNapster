@@ -4,7 +4,7 @@ import java.net.Socket;
 public class ServerHost extends Thread {
 	
 	/**
-	* Creates a ServerHhost object for ClientHost connections.
+	* Creates a ServerHost object for ClientHost connections.
 	*/
 	public ServerHost() {
 	}
